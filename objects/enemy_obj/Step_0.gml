@@ -8,8 +8,8 @@ vsp += grv;
 // jump
 
 // Horizontal collision
-if (place_meeting(x+hsp, y, ground_obj)){
-	while(!place_meeting(x+sign(hsp),y,ground_obj)){
+if (place_meeting(x+hsp, y, wall_obj)){
+	while(!place_meeting(x+sign(hsp),y,wall_obj)){
 		x += sign(hsp)
 	}
 	hsp = -hsp;
