@@ -2,18 +2,27 @@
 // You can write your code in this editor
 
 // input player
-left  = keyboard_check(ord("A")) or keyboard_check(vk_left);
-right = keyboard_check(ord("D")) or keyboard_check(vk_right);
-jump  = keyboard_check_pressed(vk_space);
+if(hascontrol){
+	left  = keyboard_check(ord("A")) or keyboard_check(vk_left);
+	right = keyboard_check(ord("D")) or keyboard_check(vk_right);
+	jump  = keyboard_check_pressed(vk_space);
 
+	
+	
+} else{
+	left = 0;
+	right = 0;
+	jump = 0;
+}
 var xDirection = left - right;
 var onGround   = place_meeting(x, y + 1, ground_obj); 
-
+if (xDirection != 0) image_xscale = xDirection;
 // wall jump
 var onWall = place_meeting(x-5, y, wall_obj) - place_meeting(x + 5, y, wall_obj); 
 if (onWall != 0) vsp = min(vsp + 1, 2);
 
 mvtLocked = max(mvtLocked - 1, 0);
+
 // calculating movement
 var move = right - left;
 
@@ -22,7 +31,7 @@ vsp += grv;
 
 // jump
 if (mvtLocked <= 0){
-	if (xDirection != 0) image_xscale = xDirection;
+	
 	hsp = move * walkspd;
 	if (jump){
 		if (onGround){
@@ -35,15 +44,12 @@ if (mvtLocked <= 0){
 			vsp = -5;
 			hsp = onWall * walkspd;
 			mvtLocked = 10;
+			draw_text(20, 20, "Pulou da parede")
+			
 		}
 	}
 }
-// Wall jump animation
-if (onWall != 0){
-	image_speed = 0;
-	image_xscale = onWall;
-	sprite_index = wPlayer;
-}
+
 
 // Horizontal collision 
 if (place_meeting(x + hsp, y, wall_obj)){
@@ -102,13 +108,13 @@ if (!place_meeting(x, y+1, ground_obj)){
 	} else{
 		image_xscale = 1;
 		sprite_index = rPlayer;
-		
-		if (sign(hsp) < 0){
-			image_xscale = -1;	
-		}
+	}if (sign(hsp)< 0){
+		image_xscale = -1;
 	}
 }
-
+if (onWall != 0){
+	sprite_index = wPlayer;
+}
 // Teleport to debug
 if(mouse_check_button(mb_right)){
 	x = mouse_x;
